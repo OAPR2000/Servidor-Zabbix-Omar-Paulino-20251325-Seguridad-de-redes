@@ -1,0 +1,3 @@
+# WEBTERM-1325 - Configuracion de red (GNS3: clic derecho -> Edit config)
+auto eth0
+iface eth0 inet dhcp

@@ -1,0 +1,16 @@
+! Comandos de verificacion usados en R1-1325
+show ip interface brief
+show ip route
+show running-config | section dhcp
+show ip dhcp pool
+show ip dhcp binding
+show snmp community
+show access-lists SNMP-ZABBIX
+ping 8.8.8.8
+!
+! Comandos de verificacion usados en SW-1325
+show vlan brief
+show ip interface brief
+show snmp community
+ping 10.13.25.1
+ping 8.8.8.8

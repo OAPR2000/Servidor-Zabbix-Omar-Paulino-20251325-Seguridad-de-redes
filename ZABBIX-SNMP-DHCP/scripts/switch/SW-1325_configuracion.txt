@@ -1,0 +1,82 @@
+! =====================================================================
+! SW-1325 (Cisco IOSvL2 15.2) - Practica Zabbix + SNMP + DHCP
+! Omar Paulino - 20251325
+! Se pega en la consola del switch en modo privilegiado.
+! =====================================================================
+enable
+configure terminal
+!
+! --- 1. Basico ---
+hostname SW-1325
+no ip domain-lookup
+ip domain-name omar1325.local
+service password-encryption
+service timestamps log datetime msec localtime
+clock timezone AST -4 0
+enable secret Enable#1325
+username admin1325 privilege 15 secret Local#1325
+banner motd ^
+*** SW-1325 - Practica Zabbix SNMP - Omar Paulino 20251325 ***
+^
+line con 0
+ logging synchronous
+ login local
+exit
+!
+! --- 2. VLAN y puertos ---
+vlan 13
+ name LAN-1325
+vlan 999
+ name SIN-USO
+exit
+interface GigabitEthernet0/0
+ description HACIA-R1-1325-Gi1/0
+ switchport mode access
+ switchport access vlan 13
+ spanning-tree portfast edge
+ no shutdown
+exit
+interface GigabitEthernet0/1
+ description ZABBIX-1325
+ switchport mode access
+ switchport access vlan 13
+ spanning-tree portfast edge
+ no shutdown
+exit
+interface GigabitEthernet0/2
+ description WEBTERM-1325
+ switchport mode access
+ switchport access vlan 13
+ spanning-tree portfast edge
+ no shutdown
+exit
+interface range GigabitEthernet0/3, GigabitEthernet1/0 - 3
+ description SIN-USO
+ switchport mode access
+ switchport access vlan 999
+ shutdown
+exit
+!
+! --- 3. IP de gestion ---
+interface Vlan1
+ shutdown
+exit
+interface Vlan13
+ description GESTION-SW-1325
+ ip address 10.13.25.2 255.255.255.0
+ no shutdown
+exit
+ip default-gateway 10.13.25.1
+ip route 0.0.0.0 0.0.0.0 10.13.25.1
+!
+! --- 4. SNMP de solo lectura ---
+ip access-list standard SNMP-ZABBIX
+ permit 10.13.25.0 0.0.0.255
+ deny   any log
+exit
+snmp-server community ZBX1325-RO RO SNMP-ZABBIX
+snmp-server location Laboratorio-GNS3-20251325
+snmp-server contact Omar-Paulino-20251325
+snmp-server ifindex persist
+end
+write memory

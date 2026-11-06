@@ -1,0 +1,142 @@
+R1-1325#show running-config
+Building configuration...
+
+Current configuration : 2128 bytes
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec localtime
+service password-encryption
+!
+hostname R1-1325
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$ILx7$N3WiAUAQiK2SV1QjQdiYD/
+!
+no aaa new-model
+clock timezone AST -4 0
+no ip icmp rate-limit unreachable
+!
+!
+!
+ip dhcp excluded-address 10.13.25.1 10.13.25.20
+!
+ip dhcp pool LAN-1325
+ network 10.13.25.0 255.255.255.0
+ default-router 10.13.25.1
+ dns-server 8.8.8.8 1.1.1.1
+ domain-name omar1325.local
+ lease 7
+!
+!
+!
+no ip domain lookup
+ip domain name omar1325.local
+ip name-server 8.8.8.8
+ip cef
+no ipv6 cef
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+username admin1325 privilege 15 secret 5 $1$aOsV$ZiIw0BQJ4NpMPjItncB1V/
+!
+!
+!
+!
+!
+ip tcp synwait-time 5
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ no ip address
+ shutdown
+ duplex auto
+!
+interface GigabitEthernet0/0
+ description HACIA-INTERNET-NAT-1325
+ ip address dhcp
+ ip nat outside
+ ip tcp adjust-mss 1360
+ media-type gbic
+ speed 1000
+ duplex full
+ negotiation auto
+!
+interface GigabitEthernet1/0
+ description LAN-1325-HACIA-SW-1325
+ ip address 10.13.25.1 255.255.255.0
+ ip nat inside
+ ip tcp adjust-mss 1360
+ negotiation auto
+!
+interface FastEthernet2/0
+ no ip address
+ shutdown
+ speed auto
+ duplex auto
+!
+interface FastEthernet2/1
+ no ip address
+ shutdown
+ speed auto
+ duplex auto
+!
+ip nat inside source list NAT-LAN-1325 interface GigabitEthernet0/0 overload
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+ip access-list standard NAT-LAN-1325
+ permit 10.13.25.0 0.0.0.255
+ip access-list standard SNMP-ZABBIX
+ permit 10.13.25.0 0.0.0.255
+ deny   any log
+!
+!
+snmp-server community ZBX1325-RO RO SNMP-ZABBIX
+snmp-server location Laboratorio-GNS3-20251325
+snmp-server contact Omar-Paulino-20251325
+snmp ifmib ifindex persist
+!
+!
+control-plane
+!
+banner motd ^C
+*** R1-1325 - Practica Zabbix SNMP - Omar Paulino 20251325 ***
+^C
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ login local
+ stopbits 1
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line vty 0 4
+ login
+!
+!
+end

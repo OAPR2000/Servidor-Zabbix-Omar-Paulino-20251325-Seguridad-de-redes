@@ -1,0 +1,69 @@
+! =====================================================================
+! R1-1325 (Cisco 7206VXR - IOS 15.2(4)S6) - Practica Zabbix + SNMP + DHCP
+! Omar Paulino - 20251325
+! Se pega en la consola del router en modo privilegiado.
+! =====================================================================
+enable
+configure terminal
+!
+! --- 1. Basico ---
+hostname R1-1325
+no ip domain-lookup
+ip domain-name omar1325.local
+service password-encryption
+service timestamps log datetime msec localtime
+clock timezone AST -4 0
+enable secret Enable#1325
+username admin1325 privilege 15 secret Local#1325
+banner motd ^
+*** R1-1325 - Practica Zabbix SNMP - Omar Paulino 20251325 ***
+^
+line con 0
+ logging synchronous
+ login local
+exit
+!
+! --- 2. Interfaces ---
+interface GigabitEthernet0/0
+ description HACIA-INTERNET-NAT-1325
+ ip address dhcp
+ ip nat outside
+ ip tcp adjust-mss 1360
+ no shutdown
+exit
+interface GigabitEthernet1/0
+ description LAN-1325-HACIA-SW-1325
+ ip address 10.13.25.1 255.255.255.0
+ ip nat inside
+ ip tcp adjust-mss 1360
+ no shutdown
+exit
+!
+! --- 3. NAT para que la LAN salga a internet ---
+ip access-list standard NAT-LAN-1325
+ permit 10.13.25.0 0.0.0.255
+exit
+ip nat inside source list NAT-LAN-1325 interface GigabitEthernet0/0 overload
+ip name-server 8.8.8.8
+!
+! --- 4. Servidor DHCP de la LAN ---
+ip dhcp excluded-address 10.13.25.1 10.13.25.20
+ip dhcp pool LAN-1325
+ network 10.13.25.0 255.255.255.0
+ default-router 10.13.25.1
+ dns-server 8.8.8.8 1.1.1.1
+ domain-name omar1325.local
+ lease 7
+exit
+!
+! --- 5. SNMP de solo lectura ---
+ip access-list standard SNMP-ZABBIX
+ permit 10.13.25.0 0.0.0.255
+ deny   any log
+exit
+snmp-server community ZBX1325-RO RO SNMP-ZABBIX
+snmp-server location Laboratorio-GNS3-20251325
+snmp-server contact Omar-Paulino-20251325
+snmp-server ifindex persist
+end
+write memory

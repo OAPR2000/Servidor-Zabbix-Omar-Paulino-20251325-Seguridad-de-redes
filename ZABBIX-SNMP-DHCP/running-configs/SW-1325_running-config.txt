@@ -1,0 +1,158 @@
+SW-1325#show running-config
+Building configuration...
+
+Current configuration : 4314 bytes
+!
+! Last configuration change at 01:04:46 AST Fri Nov 6 2026
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec localtime
+service password-encryption
+service compress-config
+!
+hostname SW-1325
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$Gnls$e4IkyoVpaEXzYarfSOhIK.
+!
+username admin1325 privilege 15 secret 5 $1$TOWt$2vq.tDAhvOgipQIUXpbsF0
+no aaa new-model
+clock timezone AST -4 0
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+ip domain-name omar1325.local
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ description HACIA-R1-1325-Gi1/0
+ switchport access vlan 13
+ switchport mode access
+ negotiation auto
+ spanning-tree portfast edge
+!
+interface GigabitEthernet0/1
+ description ZABBIX-1325
+ switchport access vlan 13
+ switchport mode access
+ negotiation auto
+ spanning-tree portfast edge
+!
+interface GigabitEthernet0/2
+ description WEBTERM-1325
+ switchport access vlan 13
+ switchport mode access
+ negotiation auto
+ spanning-tree portfast edge
+!
+interface GigabitEthernet0/3
+ description SIN-USO
+ switchport access vlan 999
+ switchport mode access
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet1/0
+ description SIN-USO
+ switchport access vlan 999
+ switchport mode access
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet1/1
+ description SIN-USO
+ switchport access vlan 999
+ switchport mode access
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet1/2
+ description SIN-USO
+ switchport access vlan 999
+ switchport mode access
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet1/3
+ description SIN-USO
+ switchport access vlan 999
+ switchport mode access
+ shutdown
+ negotiation auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan13
+ description GESTION-SW-1325
+ ip address 10.13.25.2 255.255.255.0
+!
+ip default-gateway 10.13.25.1
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip route 0.0.0.0 0.0.0.0 10.13.25.1
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+ip access-list standard SNMP-ZABBIX
+ permit 10.13.25.0 0.0.0.255
+ deny   any log
+!
+!
+!
+!
+!
+snmp-server community ZBX1325-RO RO SNMP-ZABBIX
+snmp-server location Laboratorio-GNS3-20251325
+snmp-server contact Omar-Paulino-20251325
+snmp ifmib ifindex persist
+!
+control-plane
+!
+banner motd ^C
+*** SW-1325 - Practica Zabbix SNMP - Omar Paulino 20251325 ***
+^C
+!
+line con 0
+ logging synchronous
+ login local
+line aux 0
+line vty 0 4
+ login
+!
+!
+end

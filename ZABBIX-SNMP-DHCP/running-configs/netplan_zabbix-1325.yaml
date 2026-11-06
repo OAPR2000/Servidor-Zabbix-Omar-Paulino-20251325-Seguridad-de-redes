@@ -1,0 +1,10 @@
+# /etc/netplan/50-cloud-init.yaml en ZABBIX-1325 (cliente DHCP)
+network:
+  version: 2
+  ethernets:
+    ens3:
+      match:
+        macaddress: "0c:bf:bf:1b:00:00"
+      dhcp4: true
+      dhcp6: true
+      set-name: "ens3"

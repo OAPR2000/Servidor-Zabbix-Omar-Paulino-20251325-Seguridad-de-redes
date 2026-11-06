@@ -47,10 +47,10 @@ El objetivo de esta práctica es monitorear los equipos de red de forma centrali
 | Nodo en GNS3 | Hostname | Plantilla |
 |---|---|---|
 | NAT1 | NAT-1325 | Nodo NAT de GNS3 |
-| R1 | R1-1325 | Cisco c7200 |
-| IOSvL2-1 | SW-1325 | Cisco IOSvL2 |
+| R1325 | R1-1325 | Cisco c7200 |
+| SW-1325 | SW-1325 | Cisco IOSvL2 |
 | ZABBIX-1325 | zabbix-1325 | Ubuntu Cloud Guest 24.04 LTS (Noble Numbat) |
-| webterm-1 | webterm-1 | webterm (contenedor con Firefox) |
+| webterm-1325 | webterm-1 | webterm (contenedor con Firefox) |
 
 ### Diagrama lógico
 

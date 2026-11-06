@@ -438,7 +438,7 @@ apt install -y zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix
 | `zabbix-sql-scripts` | El esquema de la base de datos |
 | `zabbix-agent` | Agente para que Zabbix se monitoree a sí mismo |
 | `mysql-server` | La base de datos donde se guardan los valores |
-| `snmp` | Los comandos `snmpwalk`, `snmpget` y `snmpset`, para probar SNMP a mano |
+| `snmp` | Los comandos `snmpwalk` y `snmpset`, para probar SNMP a mano |
 
 ### 7.3 Base de datos
 

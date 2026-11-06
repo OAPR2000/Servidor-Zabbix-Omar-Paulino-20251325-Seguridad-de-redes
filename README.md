@@ -3,10 +3,7 @@
 **Omar Paulino - Matrícula 20251325**
 
 ## Video de demostración
-
-[![Video de demostración](ZABBIX-SNMP-DHCP/images/01_topologia_gns3.png)](ENLACE_DEL_VIDEO)
-
-**Enlace al video:** ENLACE_DEL_VIDEO
+https://youtu.be/zP9UjRKJLx4?si=akPg03vBnBNCUE3B
 
 ---
 
